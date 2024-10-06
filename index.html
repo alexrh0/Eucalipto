@@ -28,44 +28,33 @@
             min-height: 100%;
             z-index: -1;
         }
-        /* Estilos para el texto principal */
+        /* Estilos para los textos que flotan sobre el video */
+        #intro-text, #instructions, #story-form {
+            color: black;
+            position: relative;
+            text-align: center;
+            z-index: 2;
+            background: transparent;
+        }
+
+        /* Texto principal */
         #intro-text {
             font-size: 40px;
             font-weight: bold;
-            text-align: center;
-            padding: 100px 20px;
-            color: black;
-            z-index: 2;
+            padding: 20px;
             margin-bottom: 20px;
-            background: transparent; /* Eliminar fondo */
         }
-        /* Estilos para las instrucciones */
+
+        /* Instrucciones */
         #instructions {
             font-size: 20px;
-            text-align: center;
             padding: 20px;
-            color: black;
-            z-index: 2;
-            margin-bottom: 20px;
-            background: transparent; /* Eliminar fondo */
-        }
-        /* Contenedor de entradas */
-        .entry-container {
-            position: relative;
-            width: 80%;
-            margin: 0 auto;
-            padding: 20px;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.5); /* Fondo transparente */
-            border-radius: 10px;
-            z-index: 3;
             margin-bottom: 20px;
         }
-        /* Formulario para agregar entradas */
+
+        /* Formulario de entrada */
         #story-form {
-            text-align: center;
-            z-index: 3;
-            margin-bottom: 20px;
+            padding: 20px;
         }
         #story-form input[type="text"], #story-form textarea {
             width: 70%;
@@ -81,10 +70,11 @@
             border: none;
             cursor: pointer;
         }
-        /* Para que los textos y formulario estén alineados */
+
+        /* Para que los textos y formulario estén alineados y centrados */
         .floating-content {
-            position: relative;
-            top: 10%;
+            position: absolute;
+            top: 20%;
             width: 100%;
             z-index: 2;
             display: flex;
@@ -96,7 +86,7 @@
 <body>
     <!-- Video de fondo que se repite -->
     <div class="background-video-container">
-        <video class="background-video" autoplay loop>
+        <video class="background-video" autoplay loop muted>
             <source src="corteza.mp4" type="video/mp4">
             Tu navegador no soporta la reproducción de videos.
         </video>
@@ -124,16 +114,7 @@
         </div>
     </div>
 
-    <!-- Contenedor de la historia -->
-    <div class="entry-container" id="story-container"></div>
-
     <script>
-        // Mostrar la historia en el contenedor
-        function updateStory() {
-            const storyContainer = document.getElementById('story-container');
-            storyContainer.innerHTML = story.map(entry => `<p>${entry}</p>`).join('');
-        }
-
         // Agregar nueva parte de la historia
         document.getElementById('storyForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -160,18 +141,14 @@
             const newVideoContainer = document.createElement('div');
             newVideoContainer.classList.add('background-video-container');
             newVideoContainer.innerHTML = `
-                <video class="background-video" autoplay loop>
+                <video class="background-video" autoplay loop muted>
                     <source src="corteza.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
             `;
             document.body.appendChild(newVideoContainer);
         }
-
-        // Asegurar que el video se reproduce con audio
-        const video = document.querySelector('.background-video');
-        video.muted = false;
-        video.play();
     </script>
 </body>
 </html>
+
