@@ -96,7 +96,7 @@
 <body>
     <!-- Video de fondo que se repite -->
     <div class="background-video-container">
-        <video class="background-video" autoplay loop muted>
+        <video class="background-video" autoplay loop>
             <source src="corteza.mp4" type="video/mp4">
             Tu navegador no soporta la reproducción de videos.
         </video>
@@ -127,6 +127,7 @@
     <!-- Contenedor de la historia -->
     <div class="entry-container" id="story-container"></div>
 
+    <script>
         // Mostrar la historia en el contenedor
         function updateStory() {
             const storyContainer = document.getElementById('story-container');
@@ -139,18 +140,20 @@
             const storyDate = document.getElementById('storyDate').value;
             const storyInput = document.getElementById('storyInput').value;
             if (storyDate.trim() !== "" && storyInput.trim() !== "") {
-                story.push(`${storyDate}: ${storyInput}`);
+                // Mostrar nueva entrada directamente en la historia
+                const storyContainer = document.getElementById('story-container');
+                const newEntry = document.createElement('p');
+                newEntry.textContent = `${storyDate}: ${storyInput}`;
+                storyContainer.appendChild(newEntry);
+
+                // Limpiar el formulario después de enviar
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
-                updateStory();
 
                 // Añadir nuevo video tras cada entrada
                 addNewVideo();
             }
         });
-
-        // Inicializar la historia
-        updateStory();
 
         // Función para añadir un nuevo video mientras bajas por la página
         function addNewVideo() {
@@ -172,4 +175,3 @@
     </script>
 </body>
 </html>
-
