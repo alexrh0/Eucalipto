@@ -84,9 +84,14 @@
     </style>
 </head>
 <body>
-    <!-- Video de fondo que se repite -->
-    <div class="background-video-container">
+    <!-- Contenedor del video de fondo -->
+    <div class="background-video-container" id="video-container">
         <video class="background-video" autoplay loop muted>
+            <source src="corteza.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
+        <!-- Segundo video que se añade inmediatamente debajo del primero -->
+        <video class="background-video" autoplay loop muted style="top: 100%;">
             <source src="corteza.mp4" type="video/mp4">
             Tu navegador no soporta la reproducción de videos.
         </video>
@@ -122,32 +127,43 @@
             const storyInput = document.getElementById('storyInput').value;
             if (storyDate.trim() !== "" && storyInput.trim() !== "") {
                 // Mostrar nueva entrada directamente en la historia
+                const storyContainer = document.getElementById('story-container');
                 const newEntry = document.createElement('p');
                 newEntry.textContent = `${storyDate}: ${storyInput}`;
-                document.body.appendChild(newEntry); // Se muestra directamente en el body
+                storyContainer.appendChild(newEntry);
 
                 // Limpiar el formulario después de enviar
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
 
-                // Añadir nuevo video tras cada entrada
+                // Añadir nuevos videos cuando se agregue una nueva entrada
                 addNewVideo();
             }
         });
 
-        // Función para añadir un nuevo video mientras bajas por la página
+        // Función para añadir un nuevo video debajo del último video en la página
         function addNewVideo() {
-            const newVideoContainer = document.createElement('div');
-            newVideoContainer.classList.add('background-video-container');
-            newVideoContainer.innerHTML = `
-                <video class="background-video" autoplay loop muted>
-                    <source src="corteza.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
+            const videoContainer = document.getElementById('video-container');
+            const newVideo = document.createElement('video');
+            newVideo.classList.add('background-video');
+            newVideo.autoplay = true;
+            newVideo.loop = true;
+            newVideo.muted = true;
+            newVideo.innerHTML = `
+                <source src="corteza.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de videos.
             `;
-            document.body.appendChild(newVideoContainer);
+            // Posiciona el nuevo video debajo de los existentes
+            const lastVideo = videoContainer.querySelectorAll('video').length * 100;
+            newVideo.style.top = `${lastVideo}vh`;
+            videoContainer.appendChild(newVideo);
         }
+
+        // Asegurarse de que el primer video se reproduzca correctamente en loop y sin sonido
+        document.querySelectorAll('.background-video').forEach(function(video) {
+            video.muted = true;
+            video.play();
+        });
     </script>
 </body>
 </html>
-
