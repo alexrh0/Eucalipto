@@ -96,7 +96,7 @@
 <body>
     <!-- Video de fondo que se repite -->
     <div class="background-video-container">
-        <video class="background-video" autoplay loop>
+        <video class="background-video" autoplay loop muted>
             <source src="corteza.mp4" type="video/mp4">
             Tu navegador no soporta la reproducción de videos.
         </video>
@@ -126,13 +126,6 @@
 
     <!-- Contenedor de la historia -->
     <div class="entry-container" id="story-container"></div>
-
-    <script>
-        // Simulación de la historia almacenada
-        let story = [
-            "5 de agosto 2024, Plazuela Ricardo Flores Magón, Cuernavaca: Mi cuerpo ha dado todo lo que puede...",
-            "10 de septiembre 2024, parque de Los Álamos, Cuernavaca: El eucalipto sigue aquí..."
-        ];
 
         // Mostrar la historia en el contenedor
         function updateStory() {
