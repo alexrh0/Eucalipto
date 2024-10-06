@@ -73,6 +73,7 @@
             color: white;
             border: none;
             cursor: pointer;
+            margin-bottom: 20px; /* Añadido para dar espacio debajo del botón */
         }
 
         /* Para mantener los textos centrados y flotando */
@@ -104,8 +105,8 @@
         </video>
     </div>
 
-    <!-- Segunda capa de video -->
-    <div class="video-layer">
+    <!-- Segunda capa de video (placeholder, se agregará en JS) -->
+    <div class="video-layer" id="second-video-layer" style="display: none;">
         <video class="background-video" autoplay loop muted>
             <source src="corteza.mp4" type="video/mp4">
             Tu navegador no soporta la reproducción de videos.
@@ -179,17 +180,19 @@
 
         // Función para añadir una o dos nuevas capas de video
         function addNewVideoLayers() {
-            for (let i = 0; i < 2; i++) { // Agregar 1 o 2 videos
-                const newVideoContainer = document.createElement('div');
-                newVideoContainer.classList.add('video-layer');
-                newVideoContainer.innerHTML = `
-                    <video class="background-video" autoplay loop muted>
-                        <source src="corteza.mp4" type="video/mp4">
-                        Tu navegador no soporta la reproducción de videos.
-                    </video>
-                `;
-                document.body.appendChild(newVideoContainer);
-            }
+            const secondVideoLayer = document.getElementById('second-video-layer');
+            secondVideoLayer.style.display = "block"; // Mostrar la segunda capa de video
+
+            // Crear el nuevo video
+            const newVideoContainer = document.createElement('div');
+            newVideoContainer.classList.add('video-layer');
+            newVideoContainer.innerHTML = `
+                <video class="background-video" autoplay loop muted>
+                    <source src="corteza.mp4" type="video/mp4">
+                    Tu navegador no soporta la reproducción de videos.
+                </video>
+            `;
+            document.body.appendChild(newVideoContainer);
         }
 
         // Cargar historias cuando se carga la página
