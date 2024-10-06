@@ -11,9 +11,10 @@
             padding: 0;
             height: 100%;
             font-family: Arial, sans-serif;
-            background-color: black;
-            color: white;
+            overflow-x: hidden;
+            color: black;
         }
+
         /* Video de fondo que se repite */
         .background-video-container {
             position: relative;
@@ -25,52 +26,65 @@
             position: absolute;
             top: 0;
             left: 0;
-            min-width: 100%;
-            min-height: 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             z-index: -1;
         }
+
         /* Estilos para el texto inicial */
-        #intro-text {
+        #intro-text, #instructions {
             font-size: 40px;
             font-weight: bold;
             text-align: center;
-            padding: 100px 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            margin: 0;
+            padding: 20px;
+            color: black;
+            position: absolute;
+            top: 20%;
+            width: 100%;
+            z-index: 1;
         }
-        /* Estilos para la instrucción */
+
+        /* Instrucciones */
         #instructions {
             font-size: 20px;
-            text-align: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
+            top: 40%;
         }
-        /* Contenedor de entradas */
+
+        /* Estilos para la caja de entrada */
         .entry-container {
             width: 80%;
             margin: 0 auto;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(255, 255, 255, 0.7);
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
-            overflow-y: auto;
-            color: white;
+            color: black;
+            position: relative;
+            z-index: 1;
         }
+
         /* Formulario para agregar entradas */
         #story-form {
             text-align: center;
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(255, 255, 255, 0.7);
             border-radius: 10px;
             width: 80%;
             margin: 20px auto;
+            position: relative;
+            z-index: 1;
         }
+
         #story-form input[type="text"], #story-form textarea {
             width: 70%;
             padding: 10px;
             margin-bottom: 10px;
             font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
+
         #story-form input[type="submit"] {
             padding: 10px 20px;
             font-size: 16px;
@@ -78,24 +92,25 @@
             color: white;
             border: none;
             cursor: pointer;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <!-- Video de fondo repetido -->
     <div class="background-video-container">
-        <video class="background-video" autoplay loop>
+        <video class="background-video" autoplay loop muted>
             <source src="corteza.mp4" type="video/mp4">
             Tu navegador no soporta la reproducción de videos.
         </video>
     </div>
 
-    <!-- Texto inicial -->
+    <!-- Texto inicial flotando sobre el video -->
     <div id="intro-text">
         5 de agosto 2024, Plazuela Ricardo Flores Magón, Ayuntamiento 1985-1988, Cuernavaca Morelos. Mi cuerpo ha dado todo lo que puede, me desmorono como la corteza del eucalipto que me cubre del sol. Caminé tanto para llegar a este punto, un sitio que es atravesado por un momento que marcó la vida de alguien más. Si observas bien encuentras basura de temporalidades distintas, de historias que me permiten conocer este lugar, ¿Qué es lo que me dicen?
     </div>
 
-    <!-- Instrucción -->
+    <!-- Instrucciones flotando sobre el video -->
     <div id="instructions">
         Ve hasta abajo y lee la última entrada para continuar con la historia. Escribe la fecha y el lugar donde te encuentras a modo de diario. El texto puede ser verídico o ficción, todo gira alrededor del eucalipto.
     </div>
@@ -103,7 +118,7 @@
     <!-- Contenedor de la historia -->
     <div class="entry-container" id="story-container"></div>
 
-    <!-- Formulario para agregar parte de la historia -->
+    <!-- Formulario para agregar parte de la historia flotando sobre el video -->
     <div id="story-form">
         <form id="storyForm">
             <input type="text" id="storyDate" placeholder="Escribe la fecha y el lugar">
@@ -147,7 +162,7 @@
                 const newVideoContainer = document.createElement('div');
                 newVideoContainer.classList.add('background-video-container');
                 newVideoContainer.innerHTML = `
-                    <video class="background-video" autoplay loop>
+                    <video class="background-video" autoplay loop muted>
                         <source src="corteza.mp4" type="video/mp4">
                         Tu navegador no soporta la reproducción de videos.
                     </video>
@@ -158,3 +173,4 @@
     </script>
 </body>
 </html>
+
