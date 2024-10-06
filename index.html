@@ -9,26 +9,28 @@
         body, html {
             margin: 0;
             padding: 0;
-            height: 100%;
             font-family: Arial, sans-serif;
             overflow-x: hidden;
         }
-        /* Estilos para el video de fondo */
-        .background-video-container {
+
+        /* Contenedor general del video */
+        .video-layer {
             position: relative;
             width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            height: 100vh; /* Cubrir toda la ventana */
+            z-index: -1;
         }
+
         .background-video {
             position: absolute;
             top: 0;
             left: 0;
-            min-width: 100%;
-            min-height: 100%;
-            z-index: -1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ajustar el video */
         }
-        /* Estilos para los textos que flotan sobre el video */
+
+        /* Estilos para los textos */
         #intro-text, #instructions, #story-form {
             color: black;
             position: relative;
@@ -37,7 +39,6 @@
             background: transparent;
         }
 
-        /* Texto principal */
         #intro-text {
             font-size: 40px;
             font-weight: bold;
@@ -45,23 +46,23 @@
             margin-bottom: 20px;
         }
 
-        /* Instrucciones */
         #instructions {
             font-size: 20px;
             padding: 20px;
             margin-bottom: 20px;
         }
 
-        /* Formulario de entrada */
         #story-form {
             padding: 20px;
         }
+
         #story-form input[type="text"], #story-form textarea {
             width: 70%;
             padding: 10px;
             margin-bottom: 10px;
             font-size: 16px;
         }
+
         #story-form input[type="submit"] {
             padding: 10px 20px;
             font-size: 16px;
@@ -71,7 +72,7 @@
             cursor: pointer;
         }
 
-        /* Para que los textos y formulario estén alineados y centrados */
+        /* Para mantener los textos centrados y flotando */
         .floating-content {
             position: absolute;
             top: 20%;
@@ -84,32 +85,22 @@
     </style>
 </head>
 <body>
-    <!-- Contenedor del video de fondo -->
-    <div class="background-video-container" id="video-container">
+    <!-- Primera capa de video -->
+    <div class="video-layer">
         <video class="background-video" autoplay loop muted>
-            <source src="corteza.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-        <!-- Segundo video que se añade inmediatamente debajo del primero -->
-        <video class="background-video" autoplay loop muted style="top: 100%;">
             <source src="corteza.mp4" type="video/mp4">
             Tu navegador no soporta la reproducción de videos.
         </video>
     </div>
 
-    <!-- Contenido flotante -->
+    <!-- Contenido flotante sobre los videos -->
     <div class="floating-content">
-        <!-- Texto principal flotante -->
         <div id="intro-text">
             5 de agosto 2024, Plazuela Ricardo Flores Magón, Ayuntamiento 1985-1988, Cuernavaca Morelos. Mi cuerpo ha dado todo lo que puede, me desmorono como la corteza del eucalipto que me cubre del sol. Caminé tanto para llegar a este punto, un sitio que es atravesado por un momento que marcó la vida de alguien más. Si observas bien encuentras basura de temporalidades distintas, de historias que me permiten conocer este lugar, ¿Qué es lo que me dicen?
         </div>
-
-        <!-- Instrucciones flotantes -->
         <div id="instructions">
             Ve hasta abajo y lee la última entrada para continuar con la historia. Escribe la fecha y el lugar donde te encuentras a modo de diario. El texto puede ser verídico o ficción, todo gira alrededor del eucalipto.
         </div>
-
-        <!-- Formulario flotante para agregar parte de la historia -->
         <div id="story-form">
             <form id="storyForm">
                 <input type="text" id="storyDate" placeholder="Escribe la fecha y el lugar">
@@ -126,44 +117,34 @@
             const storyDate = document.getElementById('storyDate').value;
             const storyInput = document.getElementById('storyInput').value;
             if (storyDate.trim() !== "" && storyInput.trim() !== "") {
-                // Mostrar nueva entrada directamente en la historia
+                // Añadir el nuevo texto
                 const storyContainer = document.getElementById('story-container');
                 const newEntry = document.createElement('p');
                 newEntry.textContent = `${storyDate}: ${storyInput}`;
                 storyContainer.appendChild(newEntry);
 
-                // Limpiar el formulario después de enviar
+                // Limpiar el formulario
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
 
-                // Añadir nuevos videos cuando se agregue una nueva entrada
-                addNewVideo();
+                // Añadir nueva capa de video
+                addNewVideoLayer();
             }
         });
 
-        // Función para añadir un nuevo video debajo del último video en la página
-        function addNewVideo() {
-            const videoContainer = document.getElementById('video-container');
-            const newVideo = document.createElement('video');
-            newVideo.classList.add('background-video');
-            newVideo.autoplay = true;
-            newVideo.loop = true;
-            newVideo.muted = true;
-            newVideo.innerHTML = `
-                <source src="corteza.mp4" type="video/mp4">
-                Tu navegador no soporta la reproducción de videos.
+        // Función para añadir una nueva capa de video
+        function addNewVideoLayer() {
+            const newVideoContainer = document.createElement('div');
+            newVideoContainer.classList.add('video-layer');
+            newVideoContainer.innerHTML = `
+                <video class="background-video" autoplay loop muted>
+                    <source src="corteza.mp4" type="video/mp4">
+                    Tu navegador no soporta la reproducción de videos.
+                </video>
             `;
-            // Posiciona el nuevo video debajo de los existentes
-            const lastVideo = videoContainer.querySelectorAll('video').length * 100;
-            newVideo.style.top = `${lastVideo}vh`;
-            videoContainer.appendChild(newVideo);
+            document.body.appendChild(newVideoContainer);
         }
-
-        // Asegurarse de que el primer video se reproduzca correctamente en loop y sin sonido
-        document.querySelectorAll('.background-video').forEach(function(video) {
-            video.muted = true;
-            video.play();
-        });
     </script>
 </body>
 </html>
+
