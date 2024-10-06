@@ -130,6 +130,19 @@
     <div id="story-container"></div>
 
     <script>
+        // Función para cargar las historias desde localStorage
+        function loadStories() {
+            const stories = JSON.parse(localStorage.getItem('stories')) || [];
+            const storyContainer = document.getElementById('story-container');
+
+            // Añadir historias guardadas al contenedor
+            stories.forEach(story => {
+                const newEntry = document.createElement('p');
+                newEntry.textContent = story;
+                storyContainer.appendChild(newEntry);
+            });
+        }
+
         // Agregar nueva parte de la historia
         document.getElementById('storyForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -138,10 +151,18 @@
 
             // Verificar que los campos no estén vacíos
             if (storyDate.trim() !== "" && storyInput.trim() !== "") {
+                // Crear el texto de la historia
+                const newStory = `${storyDate}: ${storyInput}`;
+
+                // Guardar la nueva historia en localStorage
+                const stories = JSON.parse(localStorage.getItem('stories')) || [];
+                stories.push(newStory);
+                localStorage.setItem('stories', JSON.stringify(stories));
+
                 // Añadir el nuevo texto al contenedor de historias
                 const storyContainer = document.getElementById('story-container');
                 const newEntry = document.createElement('p');
-                newEntry.textContent = `${storyDate}: ${storyInput}`;
+                newEntry.textContent = newStory;
                 storyContainer.appendChild(newEntry);
 
                 // Limpiar el formulario
@@ -165,6 +186,9 @@
             `;
             document.body.appendChild(newVideoContainer);
         }
+
+        // Cargar historias cuando se carga la página
+        window.onload = loadStories;
     </script>
 </body>
 </html>
