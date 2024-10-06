@@ -82,10 +82,26 @@
             flex-direction: column;
             align-items: center;
         }
+
+        /* Contenedor para mostrar las historias */
+        #story-container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            margin-top: 300px; /* Para que las historias no se solapen con el video */
+        }
     </style>
 </head>
 <body>
     <!-- Primera capa de video -->
+    <div class="video-layer">
+        <video class="background-video" autoplay loop muted>
+            <source src="corteza.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
+    </div>
+
+    <!-- Segunda capa de video -->
     <div class="video-layer">
         <video class="background-video" autoplay loop muted>
             <source src="corteza.mp4" type="video/mp4">
@@ -103,12 +119,15 @@
         </div>
         <div id="story-form">
             <form id="storyForm">
-                <input type="text" id="storyDate" placeholder="Escribe la fecha y el lugar">
-                <textarea id="storyInput" placeholder="Escribe tu parte de la historia..." rows="4"></textarea>
+                <input type="text" id="storyDate" placeholder="Escribe la fecha y el lugar" required>
+                <textarea id="storyInput" placeholder="Escribe tu parte de la historia..." rows="4" required></textarea>
                 <input type="submit" value="Agregar">
             </form>
         </div>
     </div>
+
+    <!-- Contenedor para las historias -->
+    <div id="story-container"></div>
 
     <script>
         // Agregar nueva parte de la historia
@@ -116,8 +135,10 @@
             e.preventDefault();
             const storyDate = document.getElementById('storyDate').value;
             const storyInput = document.getElementById('storyInput').value;
+
+            // Verificar que los campos no estén vacíos
             if (storyDate.trim() !== "" && storyInput.trim() !== "") {
-                // Añadir el nuevo texto
+                // Añadir el nuevo texto al contenedor de historias
                 const storyContainer = document.getElementById('story-container');
                 const newEntry = document.createElement('p');
                 newEntry.textContent = `${storyDate}: ${storyInput}`;
@@ -147,4 +168,3 @@
     </script>
 </body>
 </html>
-
