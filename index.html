@@ -113,7 +113,13 @@
         <div id="instructions">
             Ve hasta abajo y lee la última entrada para continuar con la historia. Escribe la fecha y el lugar donde te encuentras a modo de diario. El texto puede ser verídico o ficción, todo gira alrededor del eucalipto.
         </div>
-
+<script>
+        // Simulación de la historia almacenada
+        let story = [ 
+            "Ejemplo:",
+            "5 de agosto 2024, Plazuela Ricardo Flores Magón, Cuernavaca: Mi cuerpo ha dado todo lo que puede...",
+            "10 de septiembre 2024, parque de Los Álamos, Cuernavaca: El eucalipto sigue aquí..."
+            
         <!-- Formulario flotante para agregar parte de la historia -->
         <div id="story-form">
             <form id="storyForm">
@@ -127,12 +133,6 @@
     <!-- Contenedor de la historia -->
     <div class="entry-container" id="story-container"></div>
 
-    <script>
-        // Simulación de la historia almacenada
-        let story = [ 
-            "Ejemplo:",
-            "5 de agosto 2024, Plazuela Ricardo Flores Magón, Cuernavaca: Mi cuerpo ha dado todo lo que puede...",
-            "10 de septiembre 2024, parque de Los Álamos, Cuernavaca: El eucalipto sigue aquí..."
         ];
 
         // Mostrar la historia en el contenedor
