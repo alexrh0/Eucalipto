@@ -53,6 +53,9 @@
         }
 
         #story-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             padding: 20px;
         }
 
@@ -169,22 +172,24 @@
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
 
-                // Añadir nueva capa de video
-                addNewVideoLayer();
+                // Añadir 1 o 2 nuevas capas de video
+                addNewVideoLayers();
             }
         });
 
-        // Función para añadir una nueva capa de video
-        function addNewVideoLayer() {
-            const newVideoContainer = document.createElement('div');
-            newVideoContainer.classList.add('video-layer');
-            newVideoContainer.innerHTML = `
-                <video class="background-video" autoplay loop muted>
-                    <source src="corteza.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-            `;
-            document.body.appendChild(newVideoContainer);
+        // Función para añadir una o dos nuevas capas de video
+        function addNewVideoLayers() {
+            for (let i = 0; i < 2; i++) { // Agregar 1 o 2 videos
+                const newVideoContainer = document.createElement('div');
+                newVideoContainer.classList.add('video-layer');
+                newVideoContainer.innerHTML = `
+                    <video class="background-video" autoplay loop muted>
+                        <source src="corteza.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de videos.
+                    </video>
+                `;
+                document.body.appendChild(newVideoContainer);
+            }
         }
 
         // Cargar historias cuando se carga la página
@@ -192,3 +197,4 @@
     </script>
 </body>
 </html>
+
