@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historia del Eucalipto</title>
     <style>
-        /* Estilos generales */
+        /* Estilos básicos */
         body, html {
             margin: 0;
             padding: 0;
@@ -17,7 +17,7 @@
         .video-layer {
             position: relative;
             width: 100%;
-            height: 100vh; /* Cubrir toda la ventana */
+            height: 100vh;
             z-index: -1;
         }
 
@@ -27,7 +27,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ajustar el video */
+            object-fit: cover;
         }
 
         /* Estilos para los textos */
@@ -73,7 +73,7 @@
             color: white;
             border: none;
             cursor: pointer;
-            margin-bottom: 20px; /* Añadido para dar espacio debajo del botón */
+            margin-bottom: 20px;
         }
 
         /* Para mantener los textos centrados y flotando */
@@ -92,7 +92,16 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            margin-top: 300px; /* Para que las historias no se solapen con el video */
+            margin-top: 20px;
+        }
+
+        /* Video adicional para que nunca haya fondo blanco */
+        .video-layer.extra {
+            position: absolute;
+            top: 100vh;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
         }
     </style>
 </head>
@@ -106,7 +115,7 @@
     </div>
 
     <!-- Segunda capa de video -->
-    <div class="video-layer">
+    <div class="video-layer extra">
         <video class="background-video" autoplay loop muted>
             <source src="corteza.mp4" type="video/mp4">
             Tu navegador no soporta la reproducción de videos.
@@ -134,26 +143,27 @@
     <div id="story-container"></div>
 
     <!-- Firebase JS SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
     <script>
-        // Configuración de Firebase (reemplaza con tu propio config)
+        // Configuración de Firebase (usando los datos que proporcionaste)
         const firebaseConfig = {
-          apiKey: "AIzaSyALU0CKvrJmDzm_J_9MzReSlYHetf4J8ls",
-          authDomain: "textos-eucalipto.firebaseapp.com",
-          databaseURL: "https://textos-eucalipto-default-rtdb.firebaseio.com",
-          projectId: "textos-eucalipto",
-          storageBucket: "textos-eucalipto.appspot.com",
-          messagingSenderId: "482450709158",
-          appId: "1:482450709158:web:d65b718e4b0ae2f55cf267",
+            apiKey: "AIzaSyALU0CKvrJmDzm_J_9MzReSlYHetf4J8ls",
+            authDomain: "textos-eucalipto.firebaseapp.com",
+            databaseURL: "https://textos-eucalipto-default-rtdb.firebaseio.com",
+            projectId: "textos-eucalipto",
+            storageBucket: "textos-eucalipto.appspot.com",
+            messagingSenderId: "482450709158",
+            appId: "1:482450709158:web:d65b718e4b0ae2f55cf267",
+            measurementId: "G-SF74G8005B"
         };
 
         // Inicializa Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // Función para cargar las historias desde Firebase
+        // Cargar historias desde Firebase
         function loadStories() {
             const storyContainer = document.getElementById('story-container');
             db.ref('historias').on('value', (snapshot) => {
@@ -173,18 +183,14 @@
             const storyDate = document.getElementById('storyDate').value;
             const storyInput = document.getElementById('storyInput').value;
 
-            // Verificar que los campos no estén vacíos
             if (storyDate.trim() !== "" && storyInput.trim() !== "") {
-                // Crear el texto de la historia
                 const newStory = `${storyDate}: ${storyInput}`;
 
-                // Guardar la nueva historia en Firebase
                 db.ref('historias').push({
                     texto: newStory,
                     timestamp: Date.now()
                 });
 
-                // Limpiar el formulario
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
             }
