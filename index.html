@@ -99,6 +99,14 @@
         </video>
     </div>
 
+     <!-- Segunda capa de video -->
+    <div class="video-layer extra">
+        <video class="background-video" autoplay loop muted>
+            <source src="corteza.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
+    </div>
+    
     <!-- Contenido flotante sobre el video -->
     <div class="floating-content">
         <div id="intro-text">
@@ -165,6 +173,23 @@
             });
         }
 
+        
+        // Función para añadir una o dos nuevas capas de video
+        function addNewVideoLayers() {
+            // Crear dos nuevas capas de video
+            for (let i = 0; i < 2; i++) {
+                const newVideoContainer = document.createElement('div');
+                newVideoContainer.classList.add('video-layer');
+                newVideoContainer.innerHTML = `
+                    <video class="background-video" autoplay loop muted>
+                        <source src="corteza.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de videos.
+                    </video>
+                `;
+                document.body.appendChild(newVideoContainer);
+            }
+        }
+        
         // Manejar la adición de historias al hacer clic en el botón
         document.getElementById('storyForm').addEventListener('submit', function (e) {
             e.preventDefault();
