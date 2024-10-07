@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historia del Eucalipto</title>
     <style>
-        /* Estilos básicos */
         body, html {
             margin: 0;
             padding: 0;
@@ -13,7 +12,7 @@
             overflow-x: hidden;
         }
 
-        /* Contenedor general del video */
+        /* Video de fondo */
         .video-layer {
             position: relative;
             width: 100%;
@@ -30,25 +29,31 @@
             object-fit: cover;
         }
 
-        /* Estilos para los textos */
-        #intro-text, #instructions, #story-form {
-            color: black;
-            position: relative;
-            text-align: center;
+        /* Estilos para el contenido flotante */
+        .floating-content {
+            position: absolute;
+            top: 20%;
+            width: 100%;
             z-index: 2;
-            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         #intro-text {
             font-size: 40px;
             font-weight: bold;
             padding: 20px;
+            color: black;
+            text-align: center;
             margin-bottom: 20px;
         }
 
         #instructions {
             font-size: 20px;
             padding: 20px;
+            color: black;
+            text-align: center;
             margin-bottom: 20px;
         }
 
@@ -76,37 +81,17 @@
             margin-bottom: 20px;
         }
 
-        /* Para mantener los textos centrados y flotando */
-        .floating-content {
-            position: absolute;
-            top: 20%;
-            width: 100%;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Contenedor para mostrar las historias */
         #story-container {
             position: relative;
-            z-index: 2;
             text-align: center;
             margin-top: 20px;
-        }
-
-        /* Video adicional para que nunca haya fondo blanco */
-        .video-layer.extra {
-            position: absolute;
-            top: 100vh;
-            width: 100%;
-            height: 100vh;
-            z-index: -1;
+            z-index: 2;
         }
     </style>
 </head>
 <body>
-    <!-- Primera capa de video -->
+
+    <!-- Capa de video de fondo -->
     <div class="video-layer">
         <video class="background-video" autoplay loop muted>
             <source src="corteza.mp4" type="video/mp4">
@@ -114,15 +99,7 @@
         </video>
     </div>
 
-    <!-- Segunda capa de video -->
-    <div class="video-layer extra">
-        <video class="background-video" autoplay loop muted>
-            <source src="corteza.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-    </div>
-
-    <!-- Contenido flotante sobre los videos -->
+    <!-- Contenido flotante sobre el video -->
     <div class="floating-content">
         <div id="intro-text">
             5 de agosto 2024, Plazuela Ricardo Flores Magón, Ayuntamiento 1985-1988, Cuernavaca Morelos. Mi cuerpo ha dado todo lo que puede, me desmorono como la corteza del eucalipto que me cubre del sol. Caminé tanto para llegar a este punto, un sitio que es atravesado por un momento que marcó la vida de alguien más. Si observas bien encuentras basura de temporalidades distintas, de historias que me permiten conocer este lugar, ¿Qué es lo que me dicen?
@@ -142,12 +119,11 @@
     <!-- Contenedor para las historias -->
     <div id="story-container"></div>
 
-    <!-- Firebase JS SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-
+    <!-- Firebase Integration -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        // Configuración de Firebase (usando los datos que proporcionaste)
+        // Tu configuración de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyALU0CKvrJmDzm_J_9MzReSlYHetf4J8ls",
             authDomain: "textos-eucalipto.firebaseapp.com",
@@ -159,44 +135,54 @@
             measurementId: "G-SF74G8005B"
         };
 
-        // Inicializa Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-        // Cargar historias desde Firebase
-        function loadStories() {
-            const storyContainer = document.getElementById('story-container');
-            db.ref('historias').on('value', (snapshot) => {
-                storyContainer.innerHTML = ''; // Limpiar el contenedor antes de mostrar las historias
-                snapshot.forEach((childSnapshot) => {
-                    const story = childSnapshot.val().texto;
-                    const newEntry = document.createElement('p');
-                    newEntry.textContent = story;
-                    storyContainer.appendChild(newEntry);
-                });
+        // Función para agregar una historia a Firebase
+        function addStory(date, text) {
+            const newStoryKey = database.ref().child('stories').push().key;
+            database.ref('stories/' + newStoryKey).set({
+                date: date,
+                text: text
             });
         }
 
-        // Agregar nueva parte de la historia
-        document.getElementById('storyForm').addEventListener('submit', function(e) {
+        // Función para cargar las historias desde Firebase
+        function loadStories() {
+            const storyContainer = document.getElementById('story-container');
+            storyContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevas historias
+
+            // Leer historias desde Firebase y ordenarlas por fecha
+            database.ref('stories').on('value', (snapshot) => {
+                const stories = snapshot.val();
+                for (const key in stories) {
+                    const story = stories[key];
+                    const newEntry = document.createElement('p');
+                    newEntry.textContent = `${story.date}: ${story.text}`;
+                    storyContainer.appendChild(newEntry);
+                }
+            });
+        }
+
+        // Manejar la adición de historias al hacer clic en el botón
+        document.getElementById('storyForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const storyDate = document.getElementById('storyDate').value;
             const storyInput = document.getElementById('storyInput').value;
 
+            // Verificar que los campos no estén vacíos
             if (storyDate.trim() !== "" && storyInput.trim() !== "") {
-                const newStory = `${storyDate}: ${storyInput}`;
+                // Agregar la nueva historia a Firebase
+                addStory(storyDate, storyInput);
 
-                db.ref('historias').push({
-                    texto: newStory,
-                    timestamp: Date.now()
-                });
-
+                // Limpiar el formulario
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
             }
         });
 
-        // Cargar historias cuando se carga la página
+        // Cargar las historias cuando la página se carga
         window.onload = loadStories;
     </script>
 </body>
