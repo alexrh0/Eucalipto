@@ -133,17 +133,37 @@
     <!-- Contenedor para las historias -->
     <div id="story-container"></div>
 
-    <script>
-        // Función para cargar las historias desde localStorage
-        function loadStories() {
-            const stories = JSON.parse(localStorage.getItem('stories')) || [];
-            const storyContainer = document.getElementById('story-container');
+    <!-- Firebase JS SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
 
-            // Añadir historias guardadas al contenedor
-            stories.forEach(story => {
-                const newEntry = document.createElement('p');
-                newEntry.textContent = story;
-                storyContainer.appendChild(newEntry);
+    <script>
+        // Configuración de Firebase (reemplaza con tu propio config)
+        const firebaseConfig = {
+          apiKey: "AIzaSyALU0CKvrJmDzm_J_9MzReSlYHetf4J8ls",
+          authDomain: "textos-eucalipto.firebaseapp.com"
+          databaseURL: "https://textos-eucalipto-default-rtdb.firebaseio.com",
+          projectId: "textos-eucalipto",
+          storageBucket: "textos-eucalipto.appspot.com",
+          messagingSenderId: "482450709158",
+          appId: "1:482450709158:web:d65b718e4b0ae2f55cf267",
+        };
+
+        // Inicializa Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Función para cargar las historias desde Firebase
+        function loadStories() {
+            const storyContainer = document.getElementById('story-container');
+            db.ref('historias').on('value', (snapshot) => {
+                storyContainer.innerHTML = ''; // Limpiar el contenedor antes de mostrar las historias
+                snapshot.forEach((childSnapshot) => {
+                    const story = childSnapshot.val().texto;
+                    const newEntry = document.createElement('p');
+                    newEntry.textContent = story;
+                    storyContainer.appendChild(newEntry);
+                });
             });
         }
 
@@ -158,39 +178,17 @@
                 // Crear el texto de la historia
                 const newStory = `${storyDate}: ${storyInput}`;
 
-                // Guardar la nueva historia en localStorage
-                const stories = JSON.parse(localStorage.getItem('stories')) || [];
-                stories.push(newStory);
-                localStorage.setItem('stories', JSON.stringify(stories));
-
-                // Añadir el nuevo texto al contenedor de historias
-                const storyContainer = document.getElementById('story-container');
-                const newEntry = document.createElement('p');
-                newEntry.textContent = newStory;
-                storyContainer.appendChild(newEntry);
+                // Guardar la nueva historia en Firebase
+                db.ref('historias').push({
+                    texto: newStory,
+                    timestamp: Date.now()
+                });
 
                 // Limpiar el formulario
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
-
-                // Añadir 1 o 2 nuevas capas de video
-                addNewVideoLayers();
             }
         });
-
-        // Función para añadir una o dos nuevas capas de video
-        function addNewVideoLayers() {
-            // Crear un nuevo video debajo del actual
-            const newVideoContainer = document.createElement('div');
-            newVideoContainer.classList.add('video-layer');
-            newVideoContainer.innerHTML = `
-                <video class="background-video" autoplay loop muted>
-                    <source src="corteza.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-            `;
-            document.body.appendChild(newVideoContainer);
-        }
 
         // Cargar historias cuando se carga la página
         window.onload = loadStories;
