@@ -92,8 +92,23 @@
             z-index: 2;
         }
 
-        #story-container p {
-            margin-bottom: 10px; /* Separación entre entradas de texto */
+        /* Estilos para las entradas de historias */
+        .story-entry {
+            position: absolute;
+            top: 10%;
+            width: 65%;
+            padding: 20px;
+            font-size: 20px;
+            color: white;
+            text-align: start;
+            z-index: 3;
+        }
+
+        /* Espaciado entre los videos y entradas */
+        .story-section {
+            position: relative;
+            width: 100%;
+            height: 100vh;
         }
     </style>
 </head>
@@ -174,30 +189,39 @@
                 let count = 0;
                 for (const key in stories) {
                     const story = stories[key];
-                    const newEntry = document.createElement('p');
-                    newEntry.textContent = `${story.date}: ${story.text}`;
-                    storyContainer.appendChild(newEntry);
-
-                    // Añadir una nueva capa de video por cada entrada de historia
-                    if (count > 0) {
-                        addNewVideoLayer();
-                    }
+                    addStorySection(story.date, story.text, count);
                     count++;
                 }
             });
         }
 
-        // Función para añadir una nueva capa de video
-        function addNewVideoLayer() {
-            const newVideoContainer = document.createElement('div');
-            newVideoContainer.classList.add('video-layer');
-            newVideoContainer.innerHTML = `
+        // Función para añadir una nueva sección con video y texto flotante
+        function addStorySection(date, text, count) {
+            // Crear contenedor para el video y el texto
+            const section = document.createElement('div');
+            section.classList.add('story-section');
+
+            // Añadir el video de fondo
+            const videoLayer = document.createElement('div');
+            videoLayer.classList.add('video-layer');
+            videoLayer.innerHTML = `
                 <video class="background-video" autoplay loop muted>
                     <source src="corteza.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
             `;
-            document.body.appendChild(newVideoContainer);
+
+            // Añadir el texto flotante
+            const storyEntry = document.createElement('div');
+            storyEntry.classList.add('story-entry');
+            storyEntry.innerHTML = `<p>${date}: ${text}</p>`;
+
+            // Añadir el video y el texto al contenedor de sección
+            section.appendChild(videoLayer);
+            section.appendChild(storyEntry);
+
+            // Añadir la nueva sección al contenedor principal
+            document.body.appendChild(section);
         }
 
         // Manejar la adición de historias al hacer clic en el botón
@@ -210,9 +234,6 @@
                 addStory(storyDate, storyInput);
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
-
-                // Añadir una nueva capa de video después de agregar la historia
-                addNewVideoLayer();
             }
         });
 
