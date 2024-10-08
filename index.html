@@ -8,7 +8,7 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: "Courier New", Courier, monospace; /* Cambiado a Courier New */
+            font-family: "Courier New", Courier, monospace;
             overflow-x: hidden;
         }
 
@@ -67,7 +67,7 @@
         }
 
         #story-form input[type="text"], #story-form textarea {
-            width: 65%; /* Cambiado a 65% */
+            width: 65%;
             padding: 10px;
             margin-bottom: 10px;
             font-size: 12px;
@@ -80,15 +80,20 @@
             color: white;
             border: none;
             cursor: pointer;
-            margin-bottom: 20px; /* Para dejar espacio debajo del botón */
+            margin-bottom: 20px;
         }
 
         #story-container {
-            width: 65%; /* Cambiado a 65% */
+            width: 65%;
             position: relative;
-            text-align: start; /* Alineación a la izquierda */
-            margin-top: 20px; /* Dos líneas debajo del botón */
+            text-align: start;
+            margin-top: 40px; /* Dos líneas debajo del botón de agregar */
+            font-size: 20px; /* Tamaño de la tipografía a 20 puntos */
             z-index: 2;
+        }
+
+        #story-container p {
+            margin-bottom: 10px; /* Separación entre entradas de texto */
         }
     </style>
 </head>
@@ -177,7 +182,6 @@
 
         // Función para añadir una o dos nuevas capas de video
         function addNewVideoLayers() {
-            // Crear dos nuevas capas de video
             for (let i = 0; i < 2; i++) {
                 const newVideoContainer = document.createElement('div');
                 newVideoContainer.classList.add('video-layer');
@@ -197,16 +201,10 @@
             const storyDate = document.getElementById('storyDate').value;
             const storyInput = document.getElementById('storyInput').value;
 
-            // Verificar que los campos no estén vacíos
             if (storyDate.trim() !== "" && storyInput.trim() !== "") {
-                // Agregar la nueva historia a Firebase
                 addStory(storyDate, storyInput);
-
-                // Limpiar el formulario
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
-
-                // Añadir dos nuevas capas de video
                 addNewVideoLayers();
             }
         });
