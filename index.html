@@ -8,7 +8,7 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: Courier Nwe;
+            font-family: "Courier New", Courier, monospace; /* Cambiado a Courier New */
             overflow-x: hidden;
         }
 
@@ -62,7 +62,7 @@
         #story-form {
             display: flex;
             flex-direction: column;
-            align-items: start;
+            align-items: center;
             padding: 20px;
         }
 
@@ -87,7 +87,7 @@
             width: 65%; /* Cambiado a 65% */
             position: relative;
             text-align: start; /* Alineación a la izquierda */
-            margin-top: 80px; /* Dos líneas debajo del botón */
+            margin-top: 40px; /* Dos líneas debajo del botón */
             z-index: 2;
         }
     </style>
@@ -95,6 +95,13 @@
 <body>
 
     <!-- Capa de video de fondo -->
+    <div class="video-layer">
+        <video class="background-video" autoplay loop muted>
+            <source src="corteza.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de videos.
+        </video>
+    </div>
+
     <div class="video-layer">
         <video class="background-video" autoplay loop muted>
             <source src="corteza.mp4" type="video/mp4">
