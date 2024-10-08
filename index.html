@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eucalipto</title>
+    <title>Historia del Eucalipto</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
-            font-family: Courier New;
+            font-family: Arial, sans-serif;
             overflow-x: hidden;
         }
 
@@ -33,15 +33,16 @@
         .floating-content {
             position: absolute;
             top: 20%;
-            width: 65%;
+            width: 100%;
             z-index: 2;
             display: flex;
             flex-direction: column;
-            align-items: start;
+            align-items: center;
         }
 
         #intro-text {
-            font-size: 20px;
+            width: 65%;
+            font-size: 40px;
             font-weight: bold;
             padding: 20px;
             color: black;
@@ -50,7 +51,8 @@
         }
 
         #instructions {
-            font-size: 15px;
+            width: 65%;
+            font-size: 20px;
             padding: 20px;
             color: black;
             text-align: start;
@@ -60,31 +62,32 @@
         #story-form {
             display: flex;
             flex-direction: column;
-            align-items: start;
+            align-items: center;
             padding: 20px;
         }
 
         #story-form input[type="text"], #story-form textarea {
-            width: 65%;
+            width: 65%; /* Cambiado a 65% */
             padding: 10px;
             margin-bottom: 10px;
-            font-size: 15px;
+            font-size: 16px;
         }
 
         #story-form input[type="submit"] {
             padding: 10px 20px;
-            font-size: 15px;
+            font-size: 16px;
             background-color: #28a745;
             color: white;
             border: none;
             cursor: pointer;
-            margin-bottom: 20px;
+            margin-bottom: 20px; /* Para dejar espacio debajo del botón */
         }
 
         #story-container {
+            width: 65%; /* Cambiado a 65% */
             position: relative;
-            text-align: start;
-            margin-top: 20px;
+            text-align: start; /* Alineación a la izquierda */
+            margin-top: 40px; /* Dos líneas debajo del botón */
             z-index: 2;
         }
     </style>
@@ -99,14 +102,6 @@
         </video>
     </div>
 
-     <!-- Segunda capa de video -->
-    <div class="video-layer extra">
-        <video class="background-video" autoplay loop muted>
-            <source src="corteza.mp4" type="video/mp4">
-            Tu navegador no soporta la reproducción de videos.
-        </video>
-    </div>
-    
     <!-- Contenido flotante sobre el video -->
     <div class="floating-content">
         <div id="intro-text">
@@ -141,7 +136,7 @@
             messagingSenderId: "482450709158",
             appId: "1:482450709158:web:d65b718e4b0ae2f55cf267",
             measurementId: "G-SF74G8005B"
-        }; 
+        };
 
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
@@ -173,7 +168,6 @@
             });
         }
 
-        
         // Función para añadir una o dos nuevas capas de video
         function addNewVideoLayers() {
             // Crear dos nuevas capas de video
@@ -189,7 +183,7 @@
                 document.body.appendChild(newVideoContainer);
             }
         }
-        
+
         // Manejar la adición de historias al hacer clic en el botón
         document.getElementById('storyForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -204,6 +198,9 @@
                 // Limpiar el formulario
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
+
+                // Añadir dos nuevas capas de video
+                addNewVideoLayers();
             }
         });
 
