@@ -87,8 +87,8 @@
             width: 65%;
             position: relative;
             text-align: start;
-            margin-top: 40px; /* Dos líneas debajo del botón de agregar */
-            font-size: 20px; /* Tamaño de la tipografía a 20 puntos */
+            margin-top: 40px;
+            font-size: 20px;
             z-index: 2;
         }
 
@@ -171,28 +171,33 @@
             // Leer historias desde Firebase y ordenarlas por fecha
             database.ref('stories').on('value', (snapshot) => {
                 const stories = snapshot.val();
+                let count = 0;
                 for (const key in stories) {
                     const story = stories[key];
                     const newEntry = document.createElement('p');
                     newEntry.textContent = `${story.date}: ${story.text}`;
                     storyContainer.appendChild(newEntry);
+
+                    // Añadir una nueva capa de video por cada entrada de historia
+                    if (count > 0) {
+                        addNewVideoLayer();
+                    }
+                    count++;
                 }
             });
         }
 
-        // Función para añadir una o dos nuevas capas de video
-        function addNewVideoLayers() {
-            for (let i = 0; i < 2; i++) {
-                const newVideoContainer = document.createElement('div');
-                newVideoContainer.classList.add('video-layer');
-                newVideoContainer.innerHTML = `
-                    <video class="background-video" autoplay loop muted>
-                        <source src="corteza.mp4" type="video/mp4">
-                        Tu navegador no soporta la reproducción de videos.
-                    </video>
-                `;
-                document.body.appendChild(newVideoContainer);
-            }
+        // Función para añadir una nueva capa de video
+        function addNewVideoLayer() {
+            const newVideoContainer = document.createElement('div');
+            newVideoContainer.classList.add('video-layer');
+            newVideoContainer.innerHTML = `
+                <video class="background-video" autoplay loop muted>
+                    <source src="corteza.mp4" type="video/mp4">
+                    Tu navegador no soporta la reproducción de videos.
+                </video>
+            `;
+            document.body.appendChild(newVideoContainer);
         }
 
         // Manejar la adición de historias al hacer clic en el botón
@@ -205,7 +210,9 @@
                 addStory(storyDate, storyInput);
                 document.getElementById('storyDate').value = "";
                 document.getElementById('storyInput').value = "";
-                addNewVideoLayers();
+
+                // Añadir una nueva capa de video después de agregar la historia
+                addNewVideoLayer();
             }
         });
 
